@@ -26,19 +26,19 @@ class plant:
         self.__height = height
         self.__age_d = age_d
         self.__g_rate = g_rate
-        self.counter_system1 = self.counter_system()
+        self.cs1 = self.counter_system()
 
     def show(self) -> None:
         print(f"{self.__name}: {self.__height:.1f}cm, {self.__age_d} days old")
-        self.counter_system1.setshow_c()
+        self.cs1.setshow_c()
 
     def grow(self, nod: int) -> None:
         self.__height += self.__g_rate * nod
-        self.counter_system1.setgrow_c()
+        self.cs1.setgrow_c()
 
     def age(self, nod: int) -> None:
         self.__age_d += nod
-        self.counter_system1.setage_dc()
+        self.cs1.setage_dc()
 
 
     def set_height(self, height: float) -> None:
@@ -74,8 +74,6 @@ class plant:
         return cls("Unknown plant", 0, 0)
     
         
-
-
 class flower(plant):
     def __init__(
         self, name: str, height: float, age_d: int, g_rate: float = 0.8, color: str
@@ -113,6 +111,9 @@ class seeds(flower):
     def grow(self, nod: int) -> None:
         super().grow()
 
+    def bloom(self) -> None:
+        super().bloomed()
+        self.num_seed += 42
     def age(self, nod: int) -> None:
         super().age()
     
@@ -125,7 +126,7 @@ class tree(plant):
         class counter_system:
         def __init__(self):
             self.__show_c = 0
-            self.__grow_c = 0
+            self.__growstatistics_p(f1)_c = 0
             self.__age_dc = 0
             self.__shade_c = 0
         def get_grow_c(self) -> int:
@@ -133,6 +134,7 @@ class tree(plant):
         def get_age_c(self) -> int:
             return(self.__age_dc)
         def get_show_c(self):
+            return(self.__show_c)
         
         def setshow_c(self) -> None:
             self.__show_c += 1
@@ -143,14 +145,15 @@ class tree(plant):
             self.__age_dc += 1
         def setshade_c(self) ->None:
             self.__shade_c += 1
-        def get_shade_c() -> int:
-            return ()
+        def get_shade_c(self) -> int:
+            return(self.__shade_c)
     def __init__(
         self, name: str, height: float, age_d: int,
         g_rate: float = 0.8, trunk_diameter: float
     ):
         super().__init__(name, height, age_d)
         self.trunk_diameter = trunk_diameter
+        self.cs1 = self.counter_system()
 
     def show(self) -> None:
         super().show()
@@ -159,6 +162,7 @@ class tree(plant):
     def produce_shade(self) -> None:
         print(f"Tree Oak now produces a shade of 200.0cm long and" 
              f"{self.trunk_diameter}cm wide.")
+        self.cs1.setshade_c()
 
 
 class vegtable(plant):
@@ -181,26 +185,52 @@ class vegtable(plant):
         print(f"Nutritional value: {self.nutritional_value}")
 
 
+def statistics_p(ob) ->None:
+    print(f"Stats: {ob.cs1.get_grow_c()} grow, {ob.cs1.get_age_c()}"
+        f" age, {ob.cs1.get_show_c} show")
 
+def statistics_t(ob) ->None:
+    print(f"Stats: {ob.cs1.get_grow_c()} grow, {ob.cs1.get_age_c()}"
+        f" age, {ob.cs1.get_show_c} show")
+    print(f"{ob.cs1.get_shade_c()}")
 def main() -> None:
-    f1 = flower("Rose", 15, 10, "red")
+
+    f1 = flower("Rose", 15, 10, 8, "red")
     t1 = tree("Oak", 200, 365, 5)
-    v1 = vegtable("Tomato", 5, 10, "April", 0)
+    v1 = seeds("Sunflower", 80, 45, 0)
+    p1 = plant()
     print("=== Garden Plant Types ===")
+    print("=== Check year-old")
+    print(f"Is {30} days more than a year? -> {plant.more_than_year()}")
+    print(f"Is {400} days more than a year? -> {plant.more_than_year()}")
+    print()
     print("=== Flower")
     f1.show()
+    statistics_p(f1)
     f1.bloom()
+    f1.grow(1)
     f1.show()
+    statistics_p(f1)
     print()
     print("=== Tree")
     t1.show()
+    statistics_t(t1)
     t1.produce_shade()
+    statistics_t(t1)
     print()
-    print("=== Vegetable")
+    print("=== Seed")
     v1.show()
-    v1.grow_and_age(20)
+    v1.bloom()
+    v1.age(29)
     v1.show()
+    statistics_p(v1)
+    print()
+    print("=== Anonymous")
+    p1.show()
+    statistics_p(p1)
+
 
 
 if __name__ == "__main__":
     main()
+
